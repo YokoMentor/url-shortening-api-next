@@ -1,0 +1,33 @@
+.main {
+  background-image: url('../public/illustration-working.svg');
+}
+
+.shorten {
+  background-image: url('../public/bg-shorten-mobile.svg');
+}
+
+.icon_brand_recognition {
+  background-image: url('../public/icon-brand-recognition.svg');
+}
+
+.icon_detailed_records {
+  background-image: url('../public/icon-detailed-records.svg');
+}
+
+.icon_fully_custom {
+  background-image: url('../public/icon-fully-customizable.svg');
+}
+
+.boost {
+  background-image: url('../public/bg-boost-mobile.svg');
+}
+
+@media (min-width: 768px) {
+  .shorten {
+      background-image: url('../public/bg-shorten-desktop.svg');
+    }
+
+  .boost {
+    background-image: url('../public/bg-boost-desktop.svg');
+  }
+}

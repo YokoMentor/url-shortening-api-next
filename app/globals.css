@@ -6,10 +6,17 @@
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-primary-blue: hsl(180, 66%, 49%);
+    --color-primary-purple: hsl(257, 27%, 26%);
+    --color-error-red: hsl(0, 87%, 67%);
+    --color-hover: hsl(179, 56.25%, 74.9%);
+    --color-gray-400: hsl(0, 0%, 75%);
+    --color-gray-500: hsl(257, 7%, 63%);
+    --color-gray-900: hsl(255, 11%, 22%);
+    --color-gray-950: hsl(260, 8%, 14%);
+    --color-white: hsl(0, 100%, 100%);
+    --color-bg-gray: hsl(230, 25%, 95%);
+    --breakpoint-md: 75rem
 }
 
 @media (prefers-color-scheme: dark) {
