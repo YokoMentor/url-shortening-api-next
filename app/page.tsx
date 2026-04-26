@@ -1,10 +1,9 @@
 'use client'
-import { useState, cache } from 'react'
+import { useState, cache, FormEvent } from 'react'
 import LinkShortening from '../components/linkShortening/LinkShortening'
 import Menu from '../components/menu/Menu'
-const apiKey = '86f329ca14bb48579a7283e6fd2ee554'
-const url = 'https://api.rebrandly.com/v1/links'
 import styles from './page.module.css'
+import { shortenUrl, getShortenUrls, UrlShortener } from './actions'
 
 function Page() {
 
@@ -18,10 +17,9 @@ function Page() {
   const [link, setLink] = useState('');
   const [linkError, setLinkError] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [shortenedLink, setShortenedLink] = useState('');
-  const [shortenedLinkList, setShortenedLinkList] = useState([]);
-  const [inputList, setInputList] = useState([]);
-  const [indx, setIndx] = useState(0);
+  const [shortenedLinkList, setShortenedLinkList] = useState<string[]>([]);
+  const [inputList, setInputList] = useState<string[]>([]);
+  const [urlShorteners, setUrlShorteners] = useState<UrlShortener[]>([]);
 
   function handleLinkChange(event){
     event.preventDefault();
@@ -44,42 +42,24 @@ function Page() {
     return true;
   }
 
-  function handleShortenLinks(event) {
+  async function handleShortenLinks(event:SubmitEvent) {
     event.preventDefault();
     setLinkError(false);
     validateLink(link);
     if (isValidLink(link)) {
-      shortenUrl();
-      setInputList([...inputList, link]);
-      cache.put("url-input", inputList);
-    }
-  }
-
-  const shortenUrl = async () => {
-    setShortenedLink('www.postimees.ee' + indx);
-    setShortenedLinkList([...shortenedLinkList, 'www.postimees.ee' + indx]);
-    setIndx(indx+1);
-    
-    return
-    
-    const data = JSON.stringify({destination: link});
-    try {
-      const response = await fetch (
-          url, {
-          method:'POST',
-          body: data,
-          headers: {
-          'Content-type': 'application/json',
-          'apikey': apiKey
-          }
-        }
-      );
-      if(response.ok) {
-        const jsonResponse = await response.json();
-        setShortenedLinkList([...shortenedLinkList, jsonResponse.shortUrl]);
+      await shortenUrl(link);
+      const links = await getShortenUrls();
+      setUrlShorteners(links);
+      const shortLinks: string[] = []
+      for (const e of links) {
+        shortLinks.push(e.short);
       }
-    } catch (error) {
-      console.log(error);
+      const urls: string[] = []
+      for (const e of links) {
+        urls.push(e.url);
+      }
+      setInputList(urls);
+      setShortenedLinkList(shortLinks);
     }
   }
   
@@ -95,7 +75,7 @@ function Page() {
         </div>
       </div>
       <div className='flex flex-col justify-center items-center mt-100 md:mt-37 w-full bg-gradient-to-b from-white from-50% to-bg-gray to-50%'>
-        <form className={`flex flex-col justify-center items-center w-[327px] md:w-[1110px] ${styles.shorten} bg-no-repeat bg-top-right bg-primary-purple rounded-xl' onSubmit={handleShortenLinks}`}>
+        <form className={`flex flex-col justify-center items-center w-[327px] md:w-[1110px] ${styles.shorten} bg-no-repeat bg-top-right bg-primary-purple rounded-xl'`} onSubmit={handleShortenLinks}>
           <div className='flex flex-col md:flex-row justify-center items-center md:items-start'>
             <div className='mt-[24px] md:mt-[52px] md:mb-[52px]'>
               <label htmlFor="name" className='mb-2'></label>
@@ -112,7 +92,7 @@ function Page() {
         </form>
       </div>
       <div className='flex flex-col justify-center items-center bg-bg-gray pt-6 md:w-full'>
-        {isVisible && <LinkShortening link = {link} shortenedLinkList = {shortenedLinkList} inputList = {inputList}/>}
+        {isVisible && <LinkShortening links={urlShorteners}/>}
         <div className='px-5 mb-14 md:w-[550px] md:mt-9 md:mb-5'>
           <h2 className='font-bold text-[27px] md:text-[40px] text-gray-950 mb-5 md:mb-3 md:tracking-tight'>Advanced Statistics</h2>
           <p className='text-[16px] md:text-[18px] text-gray-500 leading-[28px]'>Track how your links are performing scross the web with out advanced statistics dashboard.</p>

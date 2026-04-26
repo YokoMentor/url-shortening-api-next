@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function LinkShorteningList ({link, shortenedLink, handleCopy}) {
+function LinkShorteningList ({link, shortenedLink, handleCopy}: {link: string, shortenedLink: string, handleCopy: (short: string) => void}) {
   const [btnLabel, setBtnLabel] = useState('Copy');
   const [btnColor, setBtnColor] = useState(true);
   const btnStyle = 'w-[279px] h-[40px] md:w-[120px] md:h-[40px] rounded-md bg-primary-blue hover:bg-hover text-[18px] md:text-[16px] text-white font-bold cursor-pointer mb-[16px] md:mb-0 md:mr-6'
