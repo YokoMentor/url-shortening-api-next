@@ -1,0 +1,5 @@
+CREATE TABLE URL_SHORTENER (
+  id TEXT PRIMARY KEY,
+  url TEXT,
+  short TEXT
+);

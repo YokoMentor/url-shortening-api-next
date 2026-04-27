@@ -3,7 +3,8 @@ import { useState, cache, FormEvent } from 'react'
 import LinkShortening from '../components/linkShortening/LinkShortening'
 import Menu from '../components/menu/Menu'
 import styles from './page.module.css'
-import { shortenUrl, getShortenUrls, UrlShortener } from './actions'
+import { shortenUrl, getShortenUrls } from './actions'
+import { UrlShortener } from './src/services/database'
 
 function Page() {
 

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import LinkShorteningList from './LinkShorteningList'
-import { UrlShortener } from '@/app/actions';
+import { UrlShortener } from '@/app/src/services/database';
+
 
 interface LinkShorteningProps {
   links: UrlShortener[]
