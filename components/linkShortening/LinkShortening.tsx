@@ -10,7 +10,8 @@ interface LinkShorteningProps {
 const LinkShortening = ({links}: LinkShorteningProps) => {
   
   function handleCopy (short: string) {
-    navigator.clipboard.writeText(short)
+    const url = 'http://localhost:3000/api/links/' + short;
+    navigator.clipboard.writeText(url)
     .then(() => console.log('Text copied'))
     .catch(err => console.error('Failed to copy:', err));
   }

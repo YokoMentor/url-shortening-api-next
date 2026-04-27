@@ -24,6 +24,11 @@ export function fetchUrl(): UrlShortener[] {
     return fetchAll(urlShortenerDB, "select id, url, short from URL_SHORTENER", []) as UrlShortener[];
 }
 
+export function fetchOriginalUrl(short: string): string {
+    const url = fetchFirst(urlShortenerDB, "select url from URL_SHORTENER where short = ?", [short]) as UrlShortener;
+    return url.url
+}
+
 export const fetchAll = (db: InstanceType<typeof Database>, sql: string, params: any[] = []) => {
   return db.prepare(sql).all(...params);
 };
