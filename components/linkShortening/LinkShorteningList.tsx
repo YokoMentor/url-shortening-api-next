@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function LinkShorteningList ({link, shortenedLink, handleCopy}: {link: string, shortenedLink: string, handleCopy: (short: string) => void}) {
+function LinkShorteningList ({link, shortenedLink, handleCopy, handleDelete}: {link: string, shortenedLink: string, handleCopy: (short: string) => void, handleDelete: (short: string) => void}) {
   const [btnLabel, setBtnLabel] = useState('Copy');
   const [btnColor, setBtnColor] = useState(true);
   const btnStyle = 'w-[279px] h-[40px] md:w-[120px] md:h-[40px] rounded-md bg-primary-blue hover:bg-hover text-[18px] md:text-[16px] text-white font-bold cursor-pointer mb-[16px] md:mb-0 md:mr-6'
@@ -18,6 +18,10 @@ function LinkShorteningList ({link, shortenedLink, handleCopy}: {link: string, s
     }
     handleCopy(shortenedLink)
   }
+
+  function handleDeleteUrl() {
+    handleDelete(shortenedLink)
+  }
   
   return (
     <div  className='flex flex-col md:flex-row justify-center items-center w-[327px] md:w-[1110px] md:h-[72px] bg-white rounded-xl mb-4'>
@@ -27,6 +31,7 @@ function LinkShorteningList ({link, shortenedLink, handleCopy}: {link: string, s
         <div className='text-primary-blue mb-2 md:mb-0'>{shallow}</div>
       </div>
       <button className={`${btnColor ? btnStyle : btnStyleCopied}`} onClick = {changeBtnStyle}>{btnLabel}</button>
+      <button className={btnStyle} onClick = {handleDeleteUrl}>Delete</button>
     </div>
   )
 }

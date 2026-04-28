@@ -29,6 +29,10 @@ export function fetchOriginalUrl(short: string): string {
     return url.url
 }
 
+export function deleteUrl(short: string) {
+  runQuery(urlShortenerDB, "delete from URL_SHORTENER where short = ?", [short]);
+} 
+
 export const fetchAll = (db: InstanceType<typeof Database>, sql: string, params: any[] = []) => {
   return db.prepare(sql).all(...params);
 };

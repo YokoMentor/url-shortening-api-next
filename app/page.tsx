@@ -1,9 +1,9 @@
 'use client'
-import { useState, cache, FormEvent } from 'react'
+import { useState, useEffect } from 'react'
 import LinkShortening from '../components/linkShortening/LinkShortening'
 import Menu from '../components/menu/Menu'
 import styles from './page.module.css'
-import { shortenUrl, getShortenUrls } from './actions'
+import { shortenUrl, getShortenUrls, deleteShortenUrl } from './actions'
 import { UrlShortener } from './src/services/database'
 
 function Page() {
@@ -17,9 +17,7 @@ function Page() {
 
   const [link, setLink] = useState('');
   const [linkError, setLinkError] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [shortenedLinkList, setShortenedLinkList] = useState<string[]>([]);
-  const [inputList, setInputList] = useState<string[]>([]);
+  const [isVisible, setIsVisible] = useState(true);
   const [urlShorteners, setUrlShorteners] = useState<UrlShortener[]>([]);
 
   function handleLinkChange(event){
@@ -43,6 +41,15 @@ function Page() {
     return true;
   }
 
+  useEffect(() => {
+    const init = async () =>  {
+    const links = await getShortenUrls();
+        console.log(links);
+    setUrlShorteners(links);
+  }
+  init();
+  }, [])
+
   async function handleShortenLinks(event:SubmitEvent) {
     event.preventDefault();
     setLinkError(false);
@@ -51,17 +58,13 @@ function Page() {
       await shortenUrl(link);
       const links = await getShortenUrls();
       setUrlShorteners(links);
-      const shortLinks: string[] = []
-      for (const e of links) {
-        shortLinks.push(e.short);
-      }
-      const urls: string[] = []
-      for (const e of links) {
-        urls.push(e.url);
-      }
-      setInputList(urls);
-      setShortenedLinkList(shortLinks);
     }
+  }
+
+  async function handleDelete (short: string) {
+    await deleteShortenUrl(short);
+    const links = await getShortenUrls();
+    setUrlShorteners(links);
   }
   
   return (
@@ -93,7 +96,7 @@ function Page() {
         </form>
       </div>
       <div className='flex flex-col justify-center items-center bg-bg-gray pt-6 md:w-full'>
-        {isVisible && <LinkShortening links={urlShorteners}/>}
+        {isVisible && <LinkShortening links={urlShorteners} handleDelete={handleDelete}/>}
         <div className='px-5 mb-14 md:w-[550px] md:mt-9 md:mb-5'>
           <h2 className='font-bold text-[27px] md:text-[40px] text-gray-950 mb-5 md:mb-3 md:tracking-tight'>Advanced Statistics</h2>
           <p className='text-[16px] md:text-[18px] text-gray-500 leading-[28px]'>Track how your links are performing scross the web with out advanced statistics dashboard.</p>
