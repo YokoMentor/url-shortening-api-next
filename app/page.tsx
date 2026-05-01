@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import LinkShortening from '../components/linkShortening/LinkShortening'
 import Menu from '../components/menu/Menu'
 import styles from './page.module.css'
@@ -20,13 +20,13 @@ function Page() {
   const [isVisible, setIsVisible] = useState(true);
   const [urlShorteners, setUrlShorteners] = useState<UrlShortener[]>([]);
 
-  function handleLinkChange(event){
+  function handleLinkChange(event: ChangeEvent<HTMLInputElement>){
     event.preventDefault();
     setLink(event.target.value);
     setIsVisible(false);
   }
 
-  function validateLink(value) {
+  function validateLink(value: string) {
     if (value.length == 0) {
       setLinkError(true);
     } else {
@@ -34,7 +34,7 @@ function Page() {
     }
   }
 
-  function isValidLink(value) {
+  function isValidLink(value: string) {
     if (value.length == 0) {
       return false;
     }
@@ -44,21 +44,23 @@ function Page() {
   useEffect(() => {
     const init = async () =>  {
     const links = await getShortenUrls();
-        console.log(links);
     setUrlShorteners(links);
   }
   init();
   }, [])
 
-  async function handleShortenLinks(event:SubmitEvent) {
+  function handleShortenLinks(event:React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setLinkError(false);
-    validateLink(link);
-    if (isValidLink(link)) {
-      await shortenUrl(link);
-      const links = await getShortenUrls();
-      setUrlShorteners(links);
+    const init = async () =>  {
+      setLinkError(false);
+      validateLink(link);
+      if (isValidLink(link)) {
+        await shortenUrl(link);
+        const links = await getShortenUrls();
+        setUrlShorteners(links);
+      }
     }
+    init();
   }
 
   async function handleDelete (short: string) {

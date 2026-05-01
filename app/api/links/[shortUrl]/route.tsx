@@ -1,4 +1,4 @@
- import { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import { fetchOriginalUrl } from "../../../src/services/database";
 import { redirect } from "next/navigation";
  
