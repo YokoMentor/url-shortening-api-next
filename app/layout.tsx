@@ -15,9 +15,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={poppins.className}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className={`${poppins.className} min-h-full flex flex-col`}>{children}</body>
     </html>
   );
 }

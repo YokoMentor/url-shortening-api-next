@@ -70,7 +70,7 @@ function Page() {
   }
   
   return (
-    <div className="flex flex-col min-h-screen justify-center font-display text-center">
+    <div className="flex flex-col min-h-screen justify-center text-center">
       <Menu/>
       <div className='flex flex-col items-center'>
       <div className={`${styles.main} bg-no-repeat bg-cover md:bg-auto h-[339px] md:h-[490px] w-full md:text-left bg-position-[1.2rem] md:bg-position-[52rem]`}>
